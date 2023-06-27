@@ -1,0 +1,67 @@
+# =============== #
+# Unity generated #
+# =============== #
+/[Aa]pp/
+[Bb]uild
+/[Bb]uilds/
+/[Ll]ibrary/
+/[Ll]ogs/
+/[Mm]emoryCaptures/
+[Oo]bj/
+/[Rr]ecordings/
+[Tt]emp/
+/[Uu]ser[Ss]ettings/
+/Assets/AssetStoreTools*
+/Assets/Actimage.Tools*
+*.apk
+sysinfo.txt
+*.stackdump
+*.unitypackage
+
+# Asset meta data should only be ignored when the corresponding asset is also ignored
+!/[Aa]ssets/**/*.meta
+
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+[Ee]xported[Oo]bj/
+/*.booproj
+.consulo/
+/*.csproj
+/*.pidb
+*.pidb.meta
+/*.sln*
+/*.suo
+/*.svd
+/*.tmp
+/*.unityproj
+/*.user
+/*.userprefs
+.vs/
+*.vsconfig
+ 
+# ============ #
+# OS generated #
+# ============ #
+._*
+[Dd]esktop.ini
+.DS_Store*
+Corridor/Library/ShaderCache/
+Corridor/Library/metadata/
+ehthumbs.db
+.Spotlight-V100
+.Trashes
+[Tt]humbs.db
+
+# ===================================== #
+# NuGet Build Process Generated
+# This section covers files that are generated when consuming/using MRTK from NuGet
+# May not be relevant if consuming via .unitypackages
+# ===================================== #
+/NuGet/*
+!/NuGet/BuildSource.proj
+/MRTKBuild/
+/MSBuild/
+/PackagesCopy/
+!/scripts/Packaging/NuGetRestoreProject.csproj
+Assets/Actimage.PopBalloons/Doc/
