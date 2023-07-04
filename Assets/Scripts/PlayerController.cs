@@ -28,12 +28,18 @@ public class PlayerController : MonoBehaviour
         [Tooltip("How much speed the player drops as they're turning towards the sides.")]
         public float turnDeceleration;
 
+        [Tooltip("How much speed can be added when boost is activated.")]
+        public float boostSpeed;
+
+        [Tooltip("How much time do the player have to wait between each boost activation.")]
+        public float boostTimer;
+
     }
 
     public Stats playerStats;
 
     [Tooltip("Keyboard controls for steering left and right.")]
-    public KeyCode left, right;
+    public KeyCode left, right,boost;
 
     [Tooltip("Whether the player is moving down hill or not.")]
     public bool isMoving;
@@ -48,43 +54,108 @@ public class PlayerController : MonoBehaviour
  
     private Animator anim;
 
+    private float timer;
+
+    private float initMaxSpeed; 
+
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
         anim = gameObject.GetComponent<Animator>();
+        timer = 0;
+        initMaxSpeed = playerStats.speedMaximum;
     }
+
+    private void Update()
+    {
+        if(timer > 0)
+            timer -= Time.deltaTime;
+
+        if(isMoving)
+        {
+            bool OnGround = Physics.Linecast(transform.position, groundCheck.position, groundLayers);
+
+            if (OnGround)
+            {
+                if (Input.GetKey(left))
+                {
+                    TurnLeft();
+                }
+                if (Input.GetKey(right))
+                {
+                    TurnRight();
+                }
+                if (Input.GetKey(boost) && (timer <= 0))
+                {
+                    timer = playerStats.boostTimer;
+                    playerStats.speedMaximum = playerStats.speedMaximum *2;
+                    StartCoroutine(BoostUp());
+                }
+            }
+        }
+    }
+
     void FixedUpdate()
     {
-        if (!isGrounded)
-            return;
+        ControlSpeed();
 
-        vertical = Input.GetAxis("Vertical");
-        horizontal = Input.GetAxis("Horizontal");
+        if(isMoving)
+        {
+                // increase or decrease the players speed depending on how much they are facing downhill
+                float turnAngle = Mathf.Abs(180 - transform.eulerAngles.y);
+                playerStats.speed += Remap(0, 90, playerStats.turnAcceleration, -playerStats.turnDeceleration, turnAngle);
 
-        float y = Mathf.Clamp(transform.eulerAngles.y, 90, 260);
-        
-        rb.velocity = (transform.forward * vertical) * speed ;
-        transform.Rotate((transform.up * horizontal) * rotationSpeed);
+                Vector3 velocity = (transform.forward) * playerStats.speed * Time.deltaTime;
+                velocity.y = rb.velocity.y;
+                rb.velocity = velocity;
+        }
 
-        transform.rotation = Quaternion.Euler(0f, y, 0f);
-        Debug.Log(rb.velocity);
-
+        anim.SetFloat("playerSpeed", playerStats.speed);
     }
 
-    void OnCollisionEnter(Collision collision)
+    private void TurnLeft()
     {
-        if (collision.gameObject.tag == ("Ground"))
+        if ((transform.eulerAngles.y > 91) && (transform.eulerAngles.y < 269))
         {
-            isGrounded = true;
+            transform.Rotate(new Vector3(0, -playerStats.turnSpeed, 0) * Time.deltaTime, Space.Self);
         }
     }
-    // This function is a callback for when the collider is no longer in contact with a previously collided object.
-    void OnCollisionExit(Collision collision)
+
+    private void TurnRight()
     {
-        if (collision.gameObject.tag == ("Ground"))
+        if ((transform.eulerAngles.y > 91) && (transform.eulerAngles.y < 269))
         {
-            isGrounded = false;
+            transform.Rotate(new Vector3(0, playerStats.turnSpeed, 0) * Time.deltaTime, Space.Self);
         }
     }
+
+    private IEnumerator BoostUp()
+    {
+        rb.AddForce((transform.forward) * (playerStats.speed + playerStats.boostSpeed));
+        yield return new WaitForSeconds(3.0f);
+        playerStats.speedMaximum = initMaxSpeed;
+    }
+
+    private void ControlSpeed()
+    {
+        if(playerStats.speed > playerStats.speedMaximum)
+        {
+            playerStats.speed = playerStats.speedMaximum;
+        }
+        if (playerStats.speed < playerStats.speedMinimum)
+        {
+            playerStats.speed = playerStats.speedMinimum;
+        }
+    }
+
+    // remaps a number from a given range into a new range
+    private float Remap(float OldMin, float OldMax, float NewMin, float NewMax, float OldValue)
+    {
+        float OldRange = (OldMax - OldMin);
+        float NewRange = (NewMax - NewMin);
+        float NewValue = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin;
+        return (NewValue);
+    }
+
 }
 
