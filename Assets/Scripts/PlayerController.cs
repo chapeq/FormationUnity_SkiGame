@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
     public Stats playerStats;
 
     [Tooltip("Keyboard controls for steering left and right.")]
-    public KeyCode left, right,boost;
+    public KeyCode left, right, boost;
 
     [Tooltip("Whether the player is moving down hill or not.")]
     public bool isMoving;
@@ -49,29 +49,32 @@ public class PlayerController : MonoBehaviour
 
     [Tooltip("Layermask to hold layers to check for being grounded")]
     public LayerMask groundLayers;
-    
+
     private Rigidbody rb;
- 
+
     private Animator anim;
+
+    private PlayerDamage damage;
 
     private float timer;
 
-    private float initMaxSpeed; 
+    private float initMaxSpeed;
 
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
         anim = gameObject.GetComponent<Animator>();
+        damage = gameObject.GetComponent<PlayerDamage>();
         timer = 0;
         initMaxSpeed = playerStats.speedMaximum;
     }
 
     private void Update()
     {
-        if(timer > 0)
+        if (timer > 0)
             timer -= Time.deltaTime;
 
-        if(isMoving)
+        if (isMoving && !damage.isHurt)
         {
             bool OnGround = Physics.Linecast(transform.position, groundCheck.position, groundLayers);
 
@@ -88,7 +91,7 @@ public class PlayerController : MonoBehaviour
                 if (Input.GetKey(boost) && (timer <= 0))
                 {
                     timer = playerStats.boostTimer;
-                    playerStats.speedMaximum = playerStats.speedMaximum *2;
+                    playerStats.speedMaximum = playerStats.speedMaximum * 2;
                     StartCoroutine(BoostUp());
                 }
             }
@@ -99,15 +102,15 @@ public class PlayerController : MonoBehaviour
     {
         ControlSpeed();
 
-        if(isMoving)
+        if (isMoving && !damage.isHurt)
         {
-                // increase or decrease the players speed depending on how much they are facing downhill
-                float turnAngle = Mathf.Abs(180 - transform.eulerAngles.y);
-                playerStats.speed += Remap(0, 90, playerStats.turnAcceleration, -playerStats.turnDeceleration, turnAngle);
+            // increase or decrease the players speed depending on how much they are facing downhill
+            float turnAngle = Mathf.Abs(180 - transform.eulerAngles.y);
+            playerStats.speed += Remap(0, 90, playerStats.turnAcceleration, -playerStats.turnDeceleration, turnAngle);
 
-                Vector3 velocity = (transform.forward) * playerStats.speed * Time.deltaTime;
-                velocity.y = rb.velocity.y;
-                rb.velocity = velocity;
+            Vector3 velocity = (transform.forward) * playerStats.speed * Time.deltaTime;
+            velocity.y = rb.velocity.y;
+            rb.velocity = velocity;
         }
 
         anim.SetFloat("playerSpeed", playerStats.speed);
@@ -138,7 +141,7 @@ public class PlayerController : MonoBehaviour
 
     private void ControlSpeed()
     {
-        if(playerStats.speed > playerStats.speedMaximum)
+        if (playerStats.speed > playerStats.speedMaximum)
         {
             playerStats.speed = playerStats.speedMaximum;
         }
@@ -156,6 +159,8 @@ public class PlayerController : MonoBehaviour
         float NewValue = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin;
         return (NewValue);
     }
+
+ 
 
 }
 

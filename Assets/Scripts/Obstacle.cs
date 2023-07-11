@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
+  
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.tag == "Player")
@@ -14,6 +15,7 @@ public class Obstacle : MonoBehaviour
 
     public virtual void HitPlayer()
     {
+        PlayerEvents.PlayerHit();
         Debug.Log("Player hit !! ");
     }
 }
