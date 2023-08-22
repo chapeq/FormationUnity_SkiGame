@@ -69,8 +69,19 @@ public class PlayerController : MonoBehaviour
         initMaxSpeed = playerStats.speedMaximum;
     }
 
+    private void OnEnable()
+    {
+        PlayerEvents.OnBoost += TriggerBoost;
+    }
+
+    private void OnDisable()
+    {
+        PlayerEvents.OnBoost -= TriggerBoost;
+    }
+
     private void Update()
     {
+      
         if (timer > 0)
             timer -= Time.deltaTime;
 
@@ -118,7 +129,7 @@ public class PlayerController : MonoBehaviour
 
     private void TurnLeft()
     {
-        if ((transform.eulerAngles.y > 91) && (transform.eulerAngles.y < 269))
+        if (transform.eulerAngles.y > 91)
         {
             transform.Rotate(new Vector3(0, -playerStats.turnSpeed, 0) * Time.deltaTime, Space.Self);
         }
@@ -126,10 +137,15 @@ public class PlayerController : MonoBehaviour
 
     private void TurnRight()
     {
-        if ((transform.eulerAngles.y > 91) && (transform.eulerAngles.y < 269))
+        if (transform.eulerAngles.y < 269)
         {
             transform.Rotate(new Vector3(0, playerStats.turnSpeed, 0) * Time.deltaTime, Space.Self);
         }
+    }
+    private void TriggerBoost()
+    {
+        playerStats.speedMaximum = playerStats.speedMaximum * 2;
+        StartCoroutine(BoostUp());
     }
 
     private IEnumerator BoostUp()
@@ -161,6 +177,6 @@ public class PlayerController : MonoBehaviour
     }
 
  
-
+  
 }
 
