@@ -67,16 +67,20 @@ public class PlayerController : MonoBehaviour
         damage = gameObject.GetComponent<PlayerDamage>();
         timer = 0;
         initMaxSpeed = playerStats.speedMaximum;
+        isMoving = false;
+        StartCoroutine(StartMoving());
     }
 
     private void OnEnable()
     {
         PlayerEvents.OnBoost += TriggerBoost;
+        GameEvents.endRace += EndMoving;
     }
 
     private void OnDisable()
     {
         PlayerEvents.OnBoost -= TriggerBoost;
+        GameEvents.endRace -= EndMoving;
     }
 
     private void Update()
@@ -176,7 +180,15 @@ public class PlayerController : MonoBehaviour
         return (NewValue);
     }
 
- 
-  
+    private IEnumerator StartMoving()
+    {
+        yield return new WaitForSeconds(2.5f);
+        isMoving = true;
+    }
+    private void EndMoving()
+    {
+        isMoving = false;
+    }
+
 }
 

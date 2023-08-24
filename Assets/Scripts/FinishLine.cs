@@ -15,6 +15,6 @@ public class FinishLine : MonoBehaviour
 
     public virtual void FinishGame()
     {
-        GameEvents.EndGame();
+        GameEvents.EndRace();
     }
 }

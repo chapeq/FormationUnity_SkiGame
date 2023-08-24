@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/SkiLevel1.unity
+    guid: 1484b2ca390254c4c972b28b77ef414b
+  - enabled: 1
+    path: Assets/Scenes/SkiLevel2.unity
+    guid: 9feb4e512c8d5734e8ea427942a6bbbd
   m_configObjects: {}

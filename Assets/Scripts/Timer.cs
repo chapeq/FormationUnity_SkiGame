@@ -11,14 +11,14 @@ public class Timer : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEvents.startGame += StartTimer;
-        GameEvents.endGame += EndTimer;
+        GameEvents.startRace += StartTimer;
+        GameEvents.endRace += EndTimer;
     }
 
     private void OnDisable()
     {
-        GameEvents.startGame -= StartTimer;
-        GameEvents.endGame -= EndTimer;
+        GameEvents.startRace -= StartTimer;
+        GameEvents.endRace -= EndTimer;
 
     }
 

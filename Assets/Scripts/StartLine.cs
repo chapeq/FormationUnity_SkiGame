@@ -15,6 +15,6 @@ public class StartLine : MonoBehaviour
 
     public virtual void StartGame()
     {
-        GameEvents.StartGame();
+        GameEvents.StartRace();
     }
 }
