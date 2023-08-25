@@ -9,9 +9,12 @@ public class GameManager : MonoBehaviour
 {
     public GameObject UIMenu;
     public TextMeshProUGUI timerText;
+    public TextMeshProUGUI RaceNb;
+    public TextMeshProUGUI[] Scores;
     public Animator Transition;
     public GameObject QuitPanel;
 
+    private float[] BestScores;
 
     private void OnEnable()
     {
@@ -32,32 +35,37 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         UIMenu.SetActive(false);
+        GetSavedScores();
     }
 
     private void ShowMenu()
     {
         UIMenu.SetActive(true);
-        TimeSpan time =  TimeSpan.FromSeconds(Timer.time);
+        TimeSpan time = TimeSpan.FromSeconds(Timer.time);
         timerText.text = time.ToString(@"mm\:ss\:ff");
+        RaceNb.text = "Race num : " + RaceData.Instance.getNbRace();
+        UpdateScores();
+        ShowScores();
+        SaveScores();
     }
 
     private void ReloadLevel()
     {
 
         StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex));
-     
+
     }
 
     private void LoadNextLevel()
     {
-        StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex +1 ));
+        StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex + 1));
     }
 
     private IEnumerator LoadLevel(int id)
     {
         UIMenu.SetActive(false);
         Transition.SetTrigger("Start");
-        yield return new  WaitForSeconds(1.1f);
+        yield return new WaitForSeconds(1.1f);
         SceneManager.LoadScene(id);
     }
 
@@ -78,6 +86,48 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         Debug.Log("Game has quit");
         Application.Quit();
+    }
+
+    private void GetSavedScores()
+    {
+        BestScores = new float[5];
+        for (int i = 0; i < 5; i++)
+        {
+            BestScores[i] = PlayerPrefs.GetFloat("Score" + i, 0);
+        }
+        Debug.Log(BestScores);
+    }
+
+    private void UpdateScores()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            if ((BestScores[i] == 0) || (Timer.time < BestScores[i]))
+            {
+                if (i < 4)
+                    BestScores[i + 1] = BestScores[i];
+
+                BestScores[i] = Timer.time;
+                break;
+            }
+        }
+    }
+
+
+    private void ShowScores()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            Scores[i].text = TimeSpan.FromSeconds(BestScores[i]).ToString(@"mm\:ss\:ff");
+        }
+    }
+
+    private void SaveScores()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            PlayerPrefs.SetFloat("Score" + i, BestScores[i]);
+        }
     }
 
 }
