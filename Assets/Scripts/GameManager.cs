@@ -10,14 +10,14 @@ public class GameManager : MonoBehaviour
     public GameObject UIMenu;
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI RaceNb;
-    public TextMeshProUGUI[] Scores;
+
     public Animator Transition;
     public GameObject QuitPanel;
 
-    private float[] BestScores;
 
     private void OnEnable()
     {
+        RaceData.numRaceIncrease += UpdateNumRace;
         GameEvents.endRace += ShowMenu;
         GameEvents.nexlevel += LoadNextLevel;
         GameEvents.reload += ReloadLevel;
@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
 
     private void OnDisable()
     {
+        RaceData.numRaceIncrease -= UpdateNumRace;
         GameEvents.endRace -= ShowMenu;
         GameEvents.nexlevel -= LoadNextLevel;
         GameEvents.reload -= ReloadLevel;
@@ -35,25 +36,17 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         UIMenu.SetActive(false);
-        GetSavedScores();
     }
 
     private void ShowMenu()
     {
         UIMenu.SetActive(true);
-        TimeSpan time = TimeSpan.FromSeconds(Timer.time);
-        timerText.text = time.ToString(@"mm\:ss\:ff");
-        RaceNb.text = "Race num : " + RaceData.Instance.getNbRace();
-        UpdateScores();
-        ShowScores();
-        SaveScores();
     }
 
     private void ReloadLevel()
     {
 
         StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex));
-
     }
 
     private void LoadNextLevel()
@@ -73,7 +66,7 @@ public class GameManager : MonoBehaviour
     {
         QuitPanel.SetActive(true);
     }
-    public void HideConfiration()
+    public void HideConfirmation()
     {
         QuitPanel.SetActive(false);
     }
@@ -88,46 +81,15 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
-    private void GetSavedScores()
+    private void UpdateNumRace()
     {
-        BestScores = new float[5];
-        for (int i = 0; i < 5; i++)
-        {
-            BestScores[i] = PlayerPrefs.GetFloat("Score" + i, 0);
-        }
-        Debug.Log(BestScores);
+        RaceNb.text = "Race number " + RaceData.Instance.getNbRace();
     }
 
-    private void UpdateScores()
+    private void Update()
     {
-        for (int i = 0; i < 5; i++)
-        {
-            if ((BestScores[i] == 0) || (Timer.time < BestScores[i]))
-            {
-                if (i < 4)
-                    BestScores[i + 1] = BestScores[i];
-
-                BestScores[i] = Timer.time;
-                break;
-            }
-        }
-    }
-
-
-    private void ShowScores()
-    {
-        for (int i = 0; i < 5; i++)
-        {
-            Scores[i].text = TimeSpan.FromSeconds(BestScores[i]).ToString(@"mm\:ss\:ff");
-        }
-    }
-
-    private void SaveScores()
-    {
-        for (int i = 0; i < 5; i++)
-        {
-            PlayerPrefs.SetFloat("Score" + i, BestScores[i]);
-        }
+        TimeSpan time = TimeSpan.FromSeconds(Timer.time);
+        timerText.text = time.ToString(@"mm\:ss\:ff");
     }
 
 }
