@@ -1,18 +1,16 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
-using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public GameObject UIMenu;
-    public TextMeshProUGUI timerText;
     public TextMeshProUGUI RaceNb;
-
     public Animator Transition;
     public GameObject QuitPanel;
+    public Slider healthbar;
 
 
     private void OnEnable()
@@ -22,6 +20,7 @@ public class GameManager : MonoBehaviour
         GameEvents.nexlevel += LoadNextLevel;
         GameEvents.reload += ReloadLevel;
         GameEvents.quit += QuitGame;
+        PlayerEvents.OnHit += UpdateHealthBar;
     }
 
     private void OnDisable()
@@ -31,11 +30,13 @@ public class GameManager : MonoBehaviour
         GameEvents.nexlevel -= LoadNextLevel;
         GameEvents.reload -= ReloadLevel;
         GameEvents.quit -= QuitGame;
+        PlayerEvents.OnHit -= UpdateHealthBar;
     }
 
     private void Start()
     {
         UIMenu.SetActive(false);
+        healthbar.value = 1;
     }
 
     private void ShowMenu()
@@ -85,11 +86,10 @@ public class GameManager : MonoBehaviour
     {
         RaceNb.text = "Race number " + RaceData.Instance.getNbRace();
     }
-
-    private void Update()
+    private void UpdateHealthBar()
     {
-        TimeSpan time = TimeSpan.FromSeconds(Timer.time);
-        timerText.text = time.ToString(@"mm\:ss\:ff");
+        healthbar.value -= 0.2f;
+        if (healthbar.value <= 0)
+            ReloadLevel();
     }
-
 }

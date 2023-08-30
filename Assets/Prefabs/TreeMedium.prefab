@@ -89,6 +89,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4514308831548784723}
   - component: {fileID: 1972419068531905811}
+  - component: {fileID: 1670764902907714731}
   m_Layer: 0
   m_Name: TreeMedium
   m_TagString: Obstacle
@@ -103,7 +104,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3886003235171834601}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -127,6 +128,18 @@ CapsuleCollider:
   m_Height: 11.01
   m_Direction: 1
   m_Center: {x: 0.2, y: -0.8, z: 0}
+--- !u!114 &1670764902907714731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3886003235171834601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f5ec772dca671445b0acbc19fa0eb25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6353995904314938026
 GameObject:
   m_ObjectHideFlags: 0

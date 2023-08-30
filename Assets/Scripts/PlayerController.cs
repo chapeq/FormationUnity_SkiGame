@@ -106,8 +106,7 @@ public class PlayerController : MonoBehaviour
                 if (Input.GetKey(boost) && (timer <= 0))
                 {
                     timer = playerStats.boostTimer;
-                    playerStats.speedMaximum = playerStats.speedMaximum * 2;
-                    StartCoroutine(BoostUp());
+                    PlayerEvents.PlayerBoost();
                 }
             }
         }

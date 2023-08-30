@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerDamage : MonoBehaviour
 {
@@ -28,7 +26,7 @@ public class PlayerDamage : MonoBehaviour
     }
     private void Knockout()
     {
-        if(!isHurt)
+        if (!isHurt)
         {
             isHurt = true;
             rb.velocity = Vector3.zero;

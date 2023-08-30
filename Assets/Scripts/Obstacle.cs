@@ -16,6 +16,5 @@ public class Obstacle : MonoBehaviour
     public virtual void HitPlayer()
     {
         PlayerEvents.PlayerHit();
-        Debug.Log("Player hit !! ");
     }
 }

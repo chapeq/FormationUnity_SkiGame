@@ -3764,13 +3764,11 @@ GameObject:
   - component: {fileID: 4335157639803988950}
   - component: {fileID: 4335157639803988951}
   - component: {fileID: -4502631440016508817}
-  - component: {fileID: 2299456004468176838}
-  - component: {fileID: 6804936762589911919}
-  - component: {fileID: 8119647157004546655}
-  - component: {fileID: 252849615}
-  - component: {fileID: 252849619}
-  - component: {fileID: 252849620}
   - component: {fileID: 252849621}
+  - component: {fileID: 252849620}
+  - component: {fileID: 6804936762589911919}
+  - component: {fileID: 2299456004468176838}
+  - component: {fileID: 8119647157004546655}
   m_Layer: 12
   m_Name: 'Player '
   m_TagString: Player
@@ -3851,7 +3849,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &2299456004468176838
+--- !u!114 &252849621
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3860,10 +3858,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 4335157639803988956}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 036419a8701a59544b460375e5d856b3, type: 3}
+  m_Script: {fileID: 11500000, guid: 2170e394ba256014eb4c4a24f896e58a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionSound: {fileID: 8300000, guid: adc46c42d2b85174d83a96624c02dbd0, type: 3}
+--- !u!114 &252849620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4335157639803988956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0687984111fa81479b1f1e515f6143b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStats:
+    speed: 0
+    speedMaximum: 1250
+    speedMinimum: 0
+    turnSpeed: 125
+    turnAcceleration: 15
+    turnDeceleration: 8
+    boostSpeed: 500
+    boostTimer: 5
+  left: 113
+  right: 100
+  boost: 101
+  isMoving: 1
+  groundCheck: {fileID: 4335157640701538008}
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &6804936762589911919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3879,6 +3905,20 @@ MonoBehaviour:
   bounceforce: 250
   recoveryTime: 1
   isHurt: 0
+--- !u!114 &2299456004468176838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4335157639803988956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 036419a8701a59544b460375e5d856b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionSound: {fileID: 8300000, guid: adc46c42d2b85174d83a96624c02dbd0, type: 3}
+  boostSound: {fileID: 8300000, guid: e47ac11610b30654ea1889229956f698, type: 3}
 --- !u!82 &8119647157004546655
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3890,7 +3930,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -3975,75 +4015,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &252849615
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4335157639803988956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 036419a8701a59544b460375e5d856b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collisionSound: {fileID: 8300000, guid: adc46c42d2b85174d83a96624c02dbd0, type: 3}
---- !u!114 &252849619
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4335157639803988956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb55ac2366e19cb4b9553b3ce988388c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bounceforce: 250
-  recoveryTime: 1
-  isHurt: 0
---- !u!114 &252849620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4335157639803988956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0687984111fa81479b1f1e515f6143b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerStats:
-    speed: 0
-    speedMaximum: 1250
-    speedMinimum: 0
-    turnSpeed: 125
-    turnAcceleration: 15
-    turnDeceleration: 8
-    boostSpeed: 500
-    boostTimer: 5
-  left: 113
-  right: 100
-  boost: 101
-  isMoving: 1
-  groundCheck: {fileID: 4335157640701538008}
-  groundLayers:
-    serializedVersion: 2
-    m_Bits: 256
---- !u!114 &252849621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4335157639803988956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2170e394ba256014eb4c4a24f896e58a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4335157639809742679
 GameObject:
   m_ObjectHideFlags: 0

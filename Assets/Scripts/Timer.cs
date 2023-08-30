@@ -1,13 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using TMPro;
 using UnityEngine;
-using System;
 
 public class Timer : MonoBehaviour
 {
     public bool raceStart = false;
+    public TextMeshProUGUI timerText;
     public static float time = 0f;
     private TimeSpan timePlaying;
+    public AudioClip startEndSound;
+    private AudioSource audio;
 
     private void OnEnable()
     {
@@ -22,19 +25,25 @@ public class Timer : MonoBehaviour
 
     }
 
-    private void StartTimer()
+    private void Start()
     {
+        audio = GetComponent<AudioSource>();
+    }
+
+    private void StartTimer()
+    {   
         time = 0f;
+        audio.PlayOneShot(startEndSound);
         StartCoroutine("IncreaseTime");
-        raceStart = true;
+        raceStart = true;      
     }
 
     private void EndTimer()
     {
         if (raceStart)
         {
+            audio.PlayOneShot(startEndSound);
             StopCoroutine("IncreaseTime");
-            Debug.Log("Race Time : " + timePlaying.ToString(@"mm\:ss\:ff"));
         }
     }
 
@@ -44,6 +53,7 @@ public class Timer : MonoBehaviour
         {
             time += Time.deltaTime;
             timePlaying = TimeSpan.FromSeconds(time);
+            timerText.text = timePlaying.ToString(@"mm\:ss\:ff");
             yield return null;
         }
 

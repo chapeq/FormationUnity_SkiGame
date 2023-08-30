@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerSound : MonoBehaviour
 {
     public AudioClip collisionSound;
+    public AudioClip boostSound;
     private AudioSource audiosource;
 
     // Start is called before the first frame update
@@ -16,15 +17,22 @@ public class PlayerSound : MonoBehaviour
     private void OnEnable()
     {
         PlayerEvents.OnHit += PlayCollisionSound; 
+        PlayerEvents.OnBoost += PlayBoostSound; 
     }
 
     private void OnDisable()
     {
         PlayerEvents.OnHit -= PlayCollisionSound;
+        PlayerEvents.OnBoost -= PlayBoostSound;
     }
   
     private void PlayCollisionSound()
     {
         audiosource.PlayOneShot(collisionSound);
+    }
+    private void PlayBoostSound()
+    {
+        audiosource.PlayOneShot(boostSound);
+
     }
 }
